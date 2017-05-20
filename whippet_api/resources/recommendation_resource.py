@@ -7,7 +7,7 @@ RECOMMENDATIONS = [
     {'id': 1, 'name': 'Smoke on the water', 'artist': 'Deep Purple'}
 ]
 
-class Recommendation(Resource):
+class RecommendationResource(Resource):
     method_decorators = [jwt_required()]
 
     def get(self):

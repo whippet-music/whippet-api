@@ -1,11 +1,11 @@
 from flask_restful import Resource
 from flask_jwt import jwt_required
 
-from whippet_api import models
+from whippet_api.models import MetaData
 
 
-class MetaData(Resource):
+class MetaDataResource(Resource):
     method_decorators = [jwt_required()]
 
     def get(self):
-        return models.MetaData.query.all()
+        return MetaData.query.all()
