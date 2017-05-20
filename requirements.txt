@@ -3,3 +3,5 @@ Flask-RESTful==0.3.5
 Flask-SQLAlchemy==2.1
 Flask-Migrate==2.0.3
 Flask-Script==2.0.5
+Werkzeug==0.11.9
+Flask-JWT==0.3.2

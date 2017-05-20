@@ -1,15 +1,13 @@
 from flask import Flask
 from flask_restful import Resource, Api
 from flask_sqlalchemy import SQLAlchemy
+from flask_jwt import JWT
 
 from config import DefaultConfig
 
 from resources import Ping
 from resources import Recommendation
 from resources import Track
-
-
-db = SQLAlchemy()
 
 
 def create_app():
@@ -37,3 +35,11 @@ def configure_resources(app):
 
 def configure_extensions(app):
     db.init_app(app)
+
+
+db = SQLAlchemy()
+app = create_app()
+
+from auth import authenticate, identity
+
+jwt = JWT(app, authenticate, identity)

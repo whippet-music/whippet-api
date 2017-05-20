@@ -1,1 +1,1 @@
-from app import create_app, db
+from app import app, db

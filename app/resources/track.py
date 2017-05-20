@@ -1,4 +1,5 @@
 from flask_restful import Resource
+from flask_jwt import jwt_required
 
 TRACKS = [
     {'id': 1, 'name': 'Smoke on the water', 'artist': 'Deep Purple'},
@@ -10,5 +11,7 @@ TRACKS = [
 ]
 
 class Track(Resource):
+    method_decorators = [jwt_required()]
+
     def get(self):
         return TRACKS
