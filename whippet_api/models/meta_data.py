@@ -8,7 +8,7 @@ class MetaData(db.Model):
     __tablename__ = 'meta_data'
 
     id = Column(db.Integer, primary_key=True)
-    track_id = Column(db.ForeignKey('user.id'), nullable=False, index=True)
+    track_id = Column(db.ForeignKey('tracks.id'), nullable=False, index=True)
     track = relationship('Track')
     year = Column(db.Integer, nullable=False)
     artist_familiarity = Column(db.Float, nullable=False)
