@@ -5,6 +5,8 @@ from whippet_api.app import db
 
 
 class Track(db.Model):
+    __tablename__ = 'tracks'
+
     id = Column(db.Integer, primary_key=True)
     artist_name = Column(db.String, nullable=False)
     title = Column(db.String, nullable=False)

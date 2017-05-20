@@ -5,6 +5,8 @@ from whippet_api.app import db
 
 
 class User(db.Model):
+    __tablename__ = 'users'
+
     id = Column(db.Integer, primary_key=True)
     username = Column(db.String(80), nullable=False, unique=True, index=True)
     password_hash = Column(db.String(120), nullable=False)
