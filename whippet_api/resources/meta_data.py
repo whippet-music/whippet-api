@@ -5,7 +5,7 @@ from whippet_api import models
 
 
 class MetaData(Resource):
-    # method_decorators = [jwt_required()]
+    method_decorators = [jwt_required()]
 
     def get(self):
         return models.MetaData.query.all()
