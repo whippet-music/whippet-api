@@ -1,7 +1,7 @@
 from sqlalchemy import Column, func
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from app.app import db
+from whippet_api.app import db
 
 
 class User(db.Model):

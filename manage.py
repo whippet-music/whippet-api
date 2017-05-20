@@ -1,8 +1,8 @@
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 
-from app import app, db
-from app.seed import seed_database
+from whippet_api import app, db
+from whippet_api.seed import seed_database
 
 
 migrate = Migrate(app, db)
