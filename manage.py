@@ -1,9 +1,11 @@
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 
-from whippet_api import app, db
+from whippet_api import create_app, db
 from whippet_api.seed import seed_database
 
+
+app = create_app()
 
 migrate = Migrate(app, db)
 

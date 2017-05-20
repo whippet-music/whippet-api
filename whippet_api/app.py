@@ -1,11 +1,10 @@
 from flask import Flask
 from flask_restful import Resource, Api
-from flask_sqlalchemy import SQLAlchemy
-from flask_jwt import JWT
 
 from config import DefaultConfig
+from extensions import db, jwt
 
-db = SQLAlchemy()
+from auth import authenticate, identity
 
 from resources import PingResource
 from resources import RecommendationResource
@@ -40,9 +39,6 @@ def configure_resources(app):
 def configure_extensions(app):
     db.init_app(app)
 
-
-app = create_app()
-
-from auth import authenticate, identity
-
-jwt = JWT(app, authenticate, identity)
+    jwt.authentication_handler(authenticate)
+    jwt.identity_handler(identity)
+    jwt.init_app(app)
