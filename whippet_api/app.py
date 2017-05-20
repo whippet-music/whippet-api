@@ -5,9 +5,12 @@ from flask_jwt import JWT
 
 from config import DefaultConfig
 
+db = SQLAlchemy()
+
 from resources import Ping
 from resources import Recommendation
 from resources import Track
+from resources import MetaData
 
 
 def create_app():
@@ -31,13 +34,13 @@ def configure_resources(app):
     api.add_resource(Ping, '/ping')
     api.add_resource(Recommendation, '/recommendations')
     api.add_resource(Track, '/tracks')
+    api.add_resource(MetaData, '/meta_data')
 
 
 def configure_extensions(app):
     db.init_app(app)
 
 
-db = SQLAlchemy()
 app = create_app()
 
 from auth import authenticate, identity
