@@ -9,3 +9,4 @@ class DefaultConfig(object):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///db.sqlite'
 
     JWT_SECRET_KEY = 'secret'
+    JWT_VERIFY_EXPIRATION = False
