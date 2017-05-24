@@ -1,4 +1,5 @@
 from ping_resource import PingResource
 from track_resource import TrackResource
+from track_vote_resource import TrackVoteResource
 from meta_data_resource import MetaDataResource
 from recommendation_resource import RecommendationResource
