@@ -1,0 +1,2 @@
+artist_name;title;release;year;artist_familiarity;artist_hotness;artist_latitude;artist_longitude;duration;end_of_fade_in;key;key_confidence;loudness;mode;mode_confidence;song_hotness;start_of_fade_out;tempo;time_signature;time_signature_confidence
+Rick Astley;Never Gonna Give You Up;Big Tunes - Back 2 The 80s;1987;0.75491764545082274;0.50746424311498184;53.456440000000001;-2.6326499999999999;211.69587000000001;0.13900000000000001;1;0.32400000000000001;-7.75;1;434;0.86424883058845414;198536;113.35899999999999;4;0.63400000000000001
