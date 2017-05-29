@@ -17,4 +17,4 @@ class TrackResource(Resource):
 
     @marshal_with(track_fields)
     def get(self):
-        return Track.query.all()
+        return Track.query.limit(10).all()
