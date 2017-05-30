@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 5217bb87d0f9
+Revision ID: 602c0025e2f5
 Revises: 
-Create Date: 2017-05-24 21:46:43.160003
+Create Date: 2017-05-30 20:07:22.649271
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '5217bb87d0f9'
+revision = '602c0025e2f5'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -39,23 +39,23 @@ def upgrade():
     op.create_table('meta_data',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('track_id', sa.Integer(), nullable=False),
-    sa.Column('year', sa.Integer(), nullable=False),
-    sa.Column('artist_familiarity', sa.Float(), nullable=False),
-    sa.Column('artist_hotttnesss', sa.Float(), nullable=False),
-    sa.Column('artist_latitude', sa.Float(), nullable=False),
-    sa.Column('artist_longitude', sa.Float(), nullable=False),
-    sa.Column('duration', sa.Float(), nullable=False),
-    sa.Column('end_of_fade_in', sa.Float(), nullable=False),
-    sa.Column('key', sa.Integer(), nullable=False),
-    sa.Column('key_confidence', sa.Float(), nullable=False),
-    sa.Column('loudness', sa.Float(), nullable=False),
-    sa.Column('mode', sa.Integer(), nullable=False),
-    sa.Column('mode_confidence', sa.Float(), nullable=False),
-    sa.Column('song_hotttnesss', sa.Float(), nullable=False),
-    sa.Column('start_of_fade_out', sa.Float(), nullable=False),
-    sa.Column('tempo', sa.Float(), nullable=False),
-    sa.Column('time_signature', sa.Integer(), nullable=False),
-    sa.Column('time_signature_confidence', sa.Float(), nullable=False),
+    sa.Column('year', sa.Integer(), nullable=True),
+    sa.Column('artist_familiarity', sa.Float(), nullable=True),
+    sa.Column('artist_hotness', sa.Float(), nullable=True),
+    sa.Column('artist_latitude', sa.Float(), nullable=True),
+    sa.Column('artist_longitude', sa.Float(), nullable=True),
+    sa.Column('duration', sa.Float(), nullable=True),
+    sa.Column('end_of_fade_in', sa.Float(), nullable=True),
+    sa.Column('key', sa.Integer(), nullable=True),
+    sa.Column('key_confidence', sa.Float(), nullable=True),
+    sa.Column('loudness', sa.Float(), nullable=True),
+    sa.Column('mode', sa.Integer(), nullable=True),
+    sa.Column('mode_confidence', sa.Float(), nullable=True),
+    sa.Column('song_hotness', sa.Float(), nullable=True),
+    sa.Column('start_of_fade_out', sa.Float(), nullable=True),
+    sa.Column('tempo', sa.Float(), nullable=True),
+    sa.Column('time_signature', sa.Integer(), nullable=True),
+    sa.Column('time_signature_confidence', sa.Float(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('updated_at', sa.DateTime(), nullable=False),
     sa.ForeignKeyConstraint(['track_id'], ['tracks.id'], ),
