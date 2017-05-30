@@ -3,17 +3,42 @@ import os
 import tarfile
 
 from app import db
-from models import User, Track
+from models import User, Track, MetaData
 
 
 TRACK_DATA_PATH = os.path.join(os.path.dirname(__file__), '../sample_data/tracks.csv')
 TRACK_ARCHIVE_PATH = os.path.join(os.path.dirname(__file__), '../sample_data/tracks.tar.gz')
 TRACK_EXTRACT_PATH = os.path.join(os.path.dirname(__file__), '../sample_data')
-TRACK_ATTRIBUTES = ('artist_name', 'title', 'release')
+
+TRACK_ATTRIBUTES = (
+    'artist_name',
+    'title',
+    'release'
+)
+
+META_ATTRIBUTES = (
+    'year',
+    'artist_familiarity',
+    'artist_hotttnesss',
+    'artist_latitude',
+    'artist_longitude',
+    'duration',
+    'end_of_fade_in',
+    'key',
+    'key_confidence',
+    'loudness',
+    'mode',
+    'mode_confidence',
+    'song_hotttnesss',
+    'start_of_fade_out',
+    'tempo',
+    'time_signature',
+    'time_signature_confidence'
+)
 
 
 def seed_database():
-    seed_user()
+    # seed_user()
     seed_tracks()
 
 
@@ -30,15 +55,42 @@ def seed_tracks():
         tar.extract(member, path=TRACK_EXTRACT_PATH)
         tar.close()
 
-    with open(TRACK_DATA_PATH, 'rb') as tracks_file:
-        reader = csv.DictReader(tracks_file, delimiter=';')
-        all_attrs = reader.fieldnames
-        for track_data in reader:
-            track_attrs = {k: v.decode('utf-8') for k, v in slice_dict(track_data, TRACK_ATTRIBUTES).items()}
-            db.session.add(Track(**track_attrs))
+    with open(TRACK_DATA_PATH, 'rb') as csv_file:
+        reader = csv.DictReader(csv_file, delimiter=';')
+        tracks = []
+        meta_data = []
+        counter = 0
+        for data in reader:
+            attrs = normalize_attrs(data)
+            track_attrs = slice_attrs(attrs, TRACK_ATTRIBUTES)
 
-        db.session.commit()
+            meta_attrs = slice_attrs(attrs, META_ATTRIBUTES)
+            meta_attrs['artist_hotness'] = meta_attrs.pop('artist_hotttnesss')
+            meta_attrs['song_hotness'] = meta_attrs.pop('song_hotttnesss')
+
+            tracks.append(Track(**track_attrs))
+            meta_data.append(MetaData(**meta_attrs))
+
+            counter += 1
+            if counter % 1000 == 0:
+                db.session.add_all(tracks)
+                db.session.commit()
+
+                for i, track in enumerate(tracks):
+                    meta_data[i].track_id = track.id
+
+                db.session.add_all(meta_data)
+                db.session.commit()
+
+                del tracks[:]
+                del meta_data[:]
+
+                print counter
 
 
-def slice_dict(d, attrs):
-    return dict([(attr, d[attr]) for attr in attrs])
+def normalize_attrs(data):
+    return {k: v.decode('utf-8') for k, v in data.items()}
+
+
+def slice_attrs(attrs, to_slice):
+    return dict([(attr, attrs[attr]) for attr in to_slice])
