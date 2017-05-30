@@ -31,7 +31,6 @@ meta_data_fields = {
 parser = reqparse.RequestParser()
 parser.add_argument('track_id', type=int,
                                 action='append',
-                                default=[],
                                 location='args')
 
 
@@ -41,7 +40,7 @@ class MetaDataResource(Resource):
     @marshal_with(meta_data_fields)
     def get(self):
         args = parser.parse_args()
-        if 'track_id' in args:
+        if 'track_id' in args and not args['track_id'] == None:
             return MetaData.query.filter(MetaData.track_id.in_(args['track_id'])).all()
         else:
             return MetaData.query.limit(10).all()
