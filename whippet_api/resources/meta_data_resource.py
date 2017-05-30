@@ -1,7 +1,7 @@
-from flask_restful import fields, marshal_with, Resource
+from flask_restful import fields, marshal_with, reqparse, Resource
 from flask_jwt import jwt_required
 
-from whippet_api.models import MetaData
+from whippet_api.models import MetaData, Track
 
 
 meta_data_fields = {
@@ -28,10 +28,20 @@ meta_data_fields = {
     'updated_at': fields.DateTime
 }
 
+parser = reqparse.RequestParser()
+parser.add_argument('track_id', type=int,
+                                action='append',
+                                default=[],
+                                location='args')
+
 
 class MetaDataResource(Resource):
     method_decorators = [jwt_required()]
 
     @marshal_with(meta_data_fields)
     def get(self):
-        return MetaData.query.limit(10).all()
+        args = parser.parse_args()
+        if 'track_id' in args:
+            return MetaData.query.filter(MetaData.track_id.in_(args['track_id'])).all()
+        else:
+            return MetaData.query.limit(10).all()
