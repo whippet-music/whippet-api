@@ -9,6 +9,7 @@ from auth import authenticate, identity
 from resources import PingResource
 from resources import TrackResource
 from resources import TrackVoteResource
+from resources import VoteListResource
 from resources import RecommendationResource
 from resources import MetaDataResource
 
@@ -34,6 +35,7 @@ def configure_resources(app):
     api.add_resource(PingResource, '/ping')
     api.add_resource(TrackResource, '/tracks')
     api.add_resource(TrackVoteResource, '/tracks/<int:track_id>/vote')
+    api.add_resource(VoteListResource, '/votes')
     api.add_resource(MetaDataResource, '/meta_data')
     api.add_resource(RecommendationResource, '/recommendations')
 

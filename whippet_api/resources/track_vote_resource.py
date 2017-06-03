@@ -4,19 +4,13 @@ from flask_jwt import jwt_required, current_identity
 from whippet_api.models import Track, Vote
 from whippet_api.app import db
 
-
-track_fields = {
-    'id': fields.Integer,
-    'user_id': fields.Integer,
-    'track_id': fields.Integer,
-    'vote_flag': fields.Boolean
-}
+from vote_list_resource import vote_fields
 
 
 class TrackVoteResource(Resource):
     method_decorators = [jwt_required()]
 
-    @marshal_with(track_fields)
+    @marshal_with(vote_fields)
     def post(self, track_id):
         track = Track.query.get(track_id)
         if not track:
