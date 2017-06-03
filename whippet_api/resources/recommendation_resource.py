@@ -2,7 +2,7 @@ from flask_restful import fields, marshal_with, Resource
 from flask_jwt import jwt_required
 from sqlalchemy  import func, desc
 
-from whippet_api.models import Track
+from whippet_api.models import Track, Vote
 
 
 recommendation_fields = {
@@ -15,5 +15,5 @@ class RecommendationResource(Resource):
 
     @marshal_with(recommendation_fields)
     def get(self):
-        tracks = Track.query(Track).outerjoin(Vote).filter(Vote.id == None).order_by(func.random()).limit(10).all()
+        tracks = Track.query.outerjoin(Vote).filter(Vote.id == None).order_by(func.random()).limit(10).all()
         return [{'track_id': track.id} for track in tracks]
