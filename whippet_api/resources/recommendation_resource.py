@@ -15,5 +15,5 @@ class RecommendationResource(Resource):
 
     @marshal_with(recommendation_fields)
     def get(self):
-        tracks = Track.query.order_by(func.random()).limit(10).all()
+        tracks = Track.query(Track).outerjoin(Vote).filter(Vote.id == None).order_by(func.random()).limit(10).all()
         return [{'track_id': track.id} for track in tracks]
