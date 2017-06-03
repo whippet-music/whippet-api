@@ -9,7 +9,7 @@ vote_fields = {
     'id': fields.Integer,
     'user_id': fields.Integer,
     'track_id': fields.Integer,
-    'vote_flag': fields.Boolean
+    'vote_flag': fields.Integer
 }
 
 
