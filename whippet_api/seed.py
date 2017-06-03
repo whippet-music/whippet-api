@@ -1,9 +1,10 @@
 import csv
 import os
 import tarfile
+import random
 
 from app import db
-from models import User, Track, MetaData
+from models import User, Track, MetaData, Vote
 
 
 TRACK_DATA_PATH = os.path.join(os.path.dirname(__file__), '../sample_data/tracks.csv')
@@ -38,28 +39,23 @@ META_ATTRIBUTES = (
 
 
 def seed_database():
-    # seed_user()
+    user = seed_user()
     seed_tracks()
+    seed_votes(user)
 
 
 def seed_user():
-    demo_user = User(username='demo', password='demo')
-    db.session.add(demo_user)
+    user = User(username='demo', password='demo')
+    db.session.add(user)
     db.session.commit()
+    return user
 
 
 def seed_tracks():
-    if not os.path.isfile(TRACK_DATA_PATH):
-        tar = tarfile.open(TRACK_ARCHIVE_PATH)
-        member = tar.getmember("tracks.csv")
-        tar.extract(member, path=TRACK_EXTRACT_PATH)
-        tar.close()
-
     with open(TRACK_DATA_PATH, 'rb') as csv_file:
         reader = csv.DictReader(csv_file, delimiter=';')
         tracks = []
         meta_data = []
-        counter = 0
         for data in reader:
             attrs = normalize_attrs(data)
             track_attrs = slice_attrs(attrs, TRACK_ATTRIBUTES)
@@ -71,21 +67,39 @@ def seed_tracks():
             tracks.append(Track(**track_attrs))
             meta_data.append(MetaData(**meta_attrs))
 
-            counter += 1
-            if counter % 1000 == 0:
-                db.session.add_all(tracks)
-                db.session.commit()
+        db.session.add_all(tracks)
+        db.session.commit()
 
-                for i, track in enumerate(tracks):
-                    meta_data[i].track_id = track.id
+        for i, track in enumerate(tracks):
+            meta_data[i].track_id = track.id
 
-                db.session.add_all(meta_data)
-                db.session.commit()
+        db.session.add_all(meta_data)
+        db.session.commit()
 
-                del tracks[:]
-                del meta_data[:]
 
-                print counter
+def seed_votes(user):
+    positive = db.session.query(MetaData.track_id, MetaData.year).filter(MetaData.year <= 1990).all()
+    negative = db.session.query(MetaData.track_id, MetaData.year).filter(MetaData.year > 1990).all()
+    votes = []
+
+    for data in positive:
+        if random.random() < 0.2:
+            continue
+        track_id, _ = data
+        votes.append(Vote(user_id=user.id,
+                          track_id=track_id,
+                          vote_flag=True))
+
+    for data in negative:
+        if random.random() < 0.2:
+            continue
+        track_id, _ = data
+        votes.append(Vote(user_id=user.id,
+                          track_id=track_id,
+                          vote_flag=False))
+
+    db.session.add_all(votes)
+    db.session.commit()
 
 
 def normalize_attrs(data):
