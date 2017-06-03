@@ -100,5 +100,3 @@ ENV/
 tmp/
 
 *.sqlite
-
-/sample_data/tracks.csv
