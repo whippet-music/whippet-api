@@ -7,7 +7,7 @@ from app import db
 from models import User, Track, MetaData, Vote
 
 
-TRACK_DATA_PATH = os.path.join(os.path.dirname(__file__), '../sample_data/tracks.csv')
+TRACK_DATA_PATH = os.path.join(os.path.dirname(__file__), '../sample_data/tracks_tiny.csv')
 TRACK_ARCHIVE_PATH = os.path.join(os.path.dirname(__file__), '../sample_data/tracks.tar.gz')
 TRACK_EXTRACT_PATH = os.path.join(os.path.dirname(__file__), '../sample_data')
 
@@ -38,14 +38,18 @@ META_ATTRIBUTES = (
 )
 
 
-def seed_database():
+def seed_database(user_count = 3):
     user = seed_user()
     seed_tracks()
     seed_votes(user)
 
+    for i in xrange(user_count - 1):
+        user = seed_user('demo' + str(i))
+        seed_votes(user)
 
-def seed_user():
-    user = User(username='demo', password='demo')
+
+def seed_user(username='demo'):
+    user = User(username=username, password='demo')
     db.session.add(user)
     db.session.commit()
     return user
