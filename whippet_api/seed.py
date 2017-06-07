@@ -5,7 +5,7 @@ import random
 
 from app import db
 from models import User, Track, MetaData, Vote
-
+from song_recommender import generate_recommendations
 
 TRACK_DATA_PATH = os.path.join(os.path.dirname(__file__), '../sample_data/tracks_tiny.csv')
 TRACK_ARCHIVE_PATH = os.path.join(os.path.dirname(__file__), '../sample_data/tracks.tar.gz')
@@ -39,13 +39,19 @@ META_ATTRIBUTES = (
 
 
 def seed_database(user_count = 3):
+    print 'Seeding users'
     user = seed_user()
+    print 'Seeding tracks'
     seed_tracks()
+    print 'Seeding votes'
     seed_votes(user)
 
     for i in xrange(user_count - 1):
         user = seed_user('demo' + str(i))
         seed_votes(user)
+
+    print 'Generating recommendations'
+    generate_recommendations()
 
 
 def seed_user(username='demo'):
