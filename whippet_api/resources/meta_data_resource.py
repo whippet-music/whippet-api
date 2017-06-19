@@ -1,3 +1,4 @@
+from flask import request
 from flask_restful import fields, marshal_with, reqparse, Resource
 from flask_jwt import jwt_required
 
@@ -28,19 +29,20 @@ meta_data_fields = {
     'updated_at': fields.DateTime
 }
 
-parser = reqparse.RequestParser()
-parser.add_argument('track_id', type=int,
-                                action='append',
-                                location='args')
+# parser = reqparse.RequestParser()
+# parser.add_argument('track_id', type=int,
+#                                 action='append',
+#                                 location='args')
 
 
 class MetaDataResource(Resource):
     method_decorators = [jwt_required()]
 
     @marshal_with(meta_data_fields)
-    def get(self):
-        args = parser.parse_args()
-        if 'track_id' in args and not args['track_id'] == None:
-            return MetaData.query.filter(MetaData.track_id.in_(args['track_id'])).all()
+    def post(self):
+        # args = parser.parse_args()
+        json_data = request.get_json()
+        if 'track_ids' in json_data and json_data['track_ids']:
+            return MetaData.query.filter(MetaData.track_id.in_(json_data['track_ids'])).all()
         else:
             return MetaData.query.limit(10).all()
